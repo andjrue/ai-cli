@@ -9,15 +9,17 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+
+
 type Config struct {
-	Models struct {
-		OpenAI struct {
-			APIKey string `yaml:"api_key"`
-		}
-		Claude struct {
-			APIKey string `yaml:"api_key"`
-		}
-	}
+	Models map[string]ProviderConfig `yaml:"providers"`
+	DefaultProvider string `yaml:"default-provider"`
+	DefaultModel string `yaml:"default-model"`
+}
+
+type ProviderConfig struct {
+	APIKey string `yaml:"api_key"`
+	Models []string `yaml:"models"`
 }
 
 func Load() (*Config, error) {
