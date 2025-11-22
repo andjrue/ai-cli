@@ -6,18 +6,18 @@ import (
 )
 
 type ModelDropdown struct {
-	MDropdown *tview.DropDown
-	manager *models.Manager
+	MDropdown        *tview.DropDown
+	manager          *models.Manager
 	onProviderChange func(string, int)
-	onModelChange func(string, int)
+	onModelChange    func(string, int)
 }
 
 func NewModelDropdown(m *models.Manager, opc, omc func(string, int)) *ModelDropdown {
 	return &ModelDropdown{
-		MDropdown: tview.NewDropDown(),
-		manager: m,
+		MDropdown:        tview.NewDropDown(),
+		manager:          m,
 		onProviderChange: opc,
-		onModelChange: omc,
+		onModelChange:    omc,
 	}
 }
 
@@ -29,6 +29,6 @@ func (md *ModelDropdown) SetModelDropdown() {
 func (md *ModelDropdown) SetModelOptions() *tview.DropDown {
 	md.MDropdown.SetOptions(md.manager.GetModelsForCurrentProvider(), md.onModelChange).
 		SetCurrentOption(0)
-	
+
 	return md.MDropdown
 }

@@ -7,20 +7,20 @@ import (
 )
 
 type ProviderDropdown struct {
-	PDropdown *tview.DropDown
-	manager *models.Manager
+	PDropdown         *tview.DropDown
+	manager           *models.Manager
 	onProviderChanged func(string, int)
-	onModelChanged func (string, int)
+	onModelChanged    func(string, int)
 }
 
 func NewProviderDropdown(manager *models.Manager, onProviderChanged, onModelChanged func(string, int)) *ProviderDropdown {
 	return &ProviderDropdown{
-		PDropdown: tview.NewDropDown(),
-		manager: manager,
+		PDropdown:         tview.NewDropDown(),
+		manager:           manager,
 		onProviderChanged: onProviderChanged,
-		onModelChanged: onModelChanged,
+		onModelChanged:    onModelChanged,
 	}
-	
+
 }
 
 func (pd *ProviderDropdown) SetProviderDropdown() {
@@ -31,6 +31,6 @@ func (pd *ProviderDropdown) SetProviderDropdown() {
 func (pd *ProviderDropdown) SetProviderOptions() *tview.DropDown {
 	pd.PDropdown.SetOptions(pd.manager.GetProviderNames(), pd.onProviderChanged).
 		SetCurrentOption(0)
-	
+
 	return pd.PDropdown
 }

@@ -13,7 +13,7 @@ func Init(filename string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	Log = log.New(file, "", log.Ldate|log.Ltime|log.Lshortfile)
 	return nil
 }

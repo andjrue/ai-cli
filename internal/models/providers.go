@@ -4,31 +4,31 @@ package models
 import "context"
 
 type Provider interface {
-	Stream(ctx context.Context, req Request) (<- chan Response, error)
+	Stream(ctx context.Context, req Request) (<-chan Response, error)
 	// ListModels() []Model
 }
 
 type Request struct {
-	Model string
-	Messages []Message
+	Model        string
+	Messages     []Message
 	SystemPrompt string
 	//Tools []Tool - TODO
 }
 
 type Response struct {
-	Type ResponseType
+	Type    ResponseType
 	Content string
-	Error error
+	Error   error
 }
 
 type Message struct {
-	Role string
+	Role    string
 	Content string
 }
 
 type Model struct {
 	ModelFamily string
-	ModelName string
+	ModelName   string
 }
 
 type ResponseType int
@@ -39,4 +39,3 @@ const (
 	ResponseTypeError
 	ResponseTypeDone
 )
-
