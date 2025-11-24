@@ -65,12 +65,12 @@ func (a *App) setupUI() {
 	a.input.SetBorder(true).SetTitle("Prompt")
 
 	selectorRow := tview.NewFlex().
-		AddItem(providerOptions, 0, 1, false).
-		AddItem(modelOptions, 0, 1, false)
+		AddItem(providerOptions, 0, 1, true).
+		AddItem(modelOptions, 0, 1, true)
 
 	a.layout = tview.NewFlex().
 		SetDirection(tview.FlexRow).
-		AddItem(selectorRow, 3, 0, false).
+		AddItem(selectorRow, 3, 0, true).
 		AddItem(a.output, 0, 6, false).
 		AddItem(a.input, 0, 2, true)
 
@@ -133,6 +133,8 @@ func (a *App) setupUI() {
 	a.input.SetBlurFunc(func() {
 		a.input.SetBorderColor(tcell.NewRGBColor(88, 91, 112))
 	})
+	
+	a.keybindings()
 }
 
 func (a *App) handleSubmit(key tcell.Key) {
@@ -192,7 +194,7 @@ func (a *App) streamResponse(req models.Request) {
 
 		case models.ResponseTypeDone:
 			a.tviewApp.QueueUpdateDraw(func() {
-				fmt.Fprintf(a.output, "\n[#a6e3a1]Response complete[#cdd6f4]")
+				fmt.Fprintf(a.output, "\n[#a6e3a1]Response complete[#cdd6f4]\n")
 			})
 		}
 	}
@@ -218,6 +220,26 @@ func (a *App) onModelChanged(text string, index int) {
 	a.manager.SwitchModel(text)
 }
 
+func (a *App) keybindings() {
+	a.tviewApp.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		 
+		if event.Key() == tcell.KeyCtrlN {
+			a.tviewApp.SetFocus(a.input)
+		}
+		
+		if event.Key() == tcell.KeyCtrlL {
+			a.tviewApp.SetFocus(a.modelSelector.MDropdown)
+		}
+		
+		if event.Key() == tcell.KeyCtrlP {
+			a.tviewApp.SetFocus(a.providerSelector.PDropdown)
+		}
+
+		return event
+	})
+}
+
 func (a *App) Run() error {
 	return a.tviewApp.Run()
 }
+
