@@ -27,8 +27,17 @@ func (md *ModelDropdown) SetModelDropdown() {
 }
 
 func (md *ModelDropdown) SetModelOptions() *tview.DropDown {
-	md.MDropdown.SetOptions(md.manager.GetModelsForCurrentProvider(), md.onModelChange).
-		SetCurrentOption(0)
+	md.MDropdown.SetOptions(md.manager.GetModelsForCurrentProvider(), nil)
+	
+	currentModel := md.manager.CurrentModel
+	for i, model := range md.manager.GetModelsForCurrentProvider() {
+		if model == currentModel {
+			md.MDropdown.SetCurrentOption(i)
+			break
+		}
+	}
 
+	md.MDropdown.SetSelectedFunc(md.onModelChange)
+	
 	return md.MDropdown
 }

@@ -29,8 +29,17 @@ func (pd *ProviderDropdown) SetProviderDropdown() {
 }
 
 func (pd *ProviderDropdown) SetProviderOptions() *tview.DropDown {
-	pd.PDropdown.SetOptions(pd.manager.GetProviderNames(), pd.onProviderChanged).
-		SetCurrentOption(0)
+	pd.PDropdown.SetOptions(pd.manager.GetProviderNames(), nil)
+	
+	currentProvider := pd.manager.CurrentProvider
+	for i, name := range pd.manager.GetProviderNames() {
+		if name == currentProvider {
+			pd.PDropdown.SetCurrentOption(i)
+			break
+		}
+	}
+	
+	pd.PDropdown.SetSelectedFunc(pd.onProviderChanged)
 
 	return pd.PDropdown
 }

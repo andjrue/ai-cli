@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/ai-cli/internal/logger"
 	"github.com/ai-cli/internal/models"
 	"github.com/ai-cli/internal/ui/components"
 	"github.com/gdamore/tcell/v2"
@@ -145,12 +146,20 @@ func (a *App) handleSubmit(key tcell.Key) {
 	}
 
 	a.input.SetText("")
+	
+	currentModel := a.manager.GetCurrentModel()
+	currentProvider := a.manager.CurrentProvider
+	
+	logger.Log.Printf("=== SENDING REQUEST ===")
+	logger.Log.Printf("Provider: %s", currentProvider)
+	logger.Log.Printf("Model: %s", currentModel)
+	logger.Log.Printf("Prompt: %s", prompt)
 
 	fmt.Fprintf(a.output, "\n[#f9e2af]Prompt:[#cdd6f4] %s\n\n", prompt)
 	fmt.Fprintf(a.output, "[#a6e3a1]Assistant:[#cdd6f4]\n")
 
 	req := models.Request{
-		Model: a.manager.GetCurrentModel(),
+		Model: currentModel,
 		Messages: []models.Message{
 			{Role: "user", Content: prompt},
 		},
