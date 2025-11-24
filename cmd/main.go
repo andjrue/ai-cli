@@ -27,17 +27,23 @@ func main() {
 		switch name {
 		case "openai":
 			providers[name] = models.NewOpenAIProvider(providerCfg.APIKey)
+			
+		case "anthropic":
+			providers[name] = models.NewAnthropicProvider(providerCfg.APIKey)
 		}
 		providerModels[name] = providerCfg.Models
 	}
 
-	manager := models.Manager{
-		providers,
-		providerModels,
-		cfg.DefaultProvider,
-		cfg.DefaultModel,
-	}
-	app := ui.NewApp(&manager)
+	manager := models.NewManager(providers, providerModels, cfg.DefaultProvider, cfg.DefaultModel)
+	logger.Log.Printf("------------------------")
+	logger.Log.Printf("Default provider from config: %s", cfg.DefaultProvider)
+	logger.Log.Printf("Default model from config: %s", cfg.DefaultModel)
+	logger.Log.Printf("Manager current provider: %s", manager.CurrentProvider)
+	logger.Log.Printf("Manager current model: %s", manager.CurrentModel)
+	logger.Log.Printf("Available providers: %s", manager.GetProviderNames())
+	logger.Log.Printf("Models for [%s]: %v", manager.CurrentProvider, manager.GetModelsForCurrentProvider())
+	logger.Log.Printf("------------------------")
+	app := ui.NewApp(manager)
 	if err := app.Run(); err != nil {
 		log.Fatal("failed to start app")
 	}
