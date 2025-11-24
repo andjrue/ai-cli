@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/ai-cli/internal/logger"
 	"gopkg.in/yaml.v3"
 )
 
@@ -25,8 +26,11 @@ func Load() (*Config, error) {
 	if err != nil {
 		return nil, fmt.Errorf("cannot load home directory: %w", err)
 	}
+	
+	logger.Log.Printf("\nHome directory: %s", homeDir)
 
 	configPath := filepath.Join(homeDir, ".config", "ai-cli", "config.yaml")
+	logger.Log.Printf("\nConfig path: %s", configPath)
 
 	data, err := os.ReadFile(configPath)
 	if err != nil {
@@ -37,6 +41,8 @@ func Load() (*Config, error) {
 	if err := yaml.Unmarshal(data, &cfg); err != nil {
 		return nil, fmt.Errorf("cannot unmarshal config file: %w", err)
 	}
+	
+	logger.Log.Printf("\nConfig file contents: %v", &cfg)
 
 	return &cfg, nil
 }
