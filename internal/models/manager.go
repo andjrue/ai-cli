@@ -41,6 +41,7 @@ func (m *Manager) SwitchModel(model string) error {
 	found := slices.Contains(validModels, model)
 	if found {
 		m.CurrentModel = model
+		return nil
 	}
 
 	return fmt.Errorf("model [%s] not available from provider [%s]", model, m.CurrentProvider)
