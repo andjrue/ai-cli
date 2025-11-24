@@ -25,9 +25,6 @@ func NewOpenAIProvider(apiKey string) *OpenAIProvider {
 	}
 }
 
-// Stream handles method switching depending on OAI model selected
-// 5 series model use response streaming
-// <= 4 use chat completion (I think, I doubt we'll ever need to go below 4)
 func (o *OpenAIProvider) Stream(ctx context.Context, req Request) (<-chan Response, error) {
 	if o.apiKey == "" {
 		log.Fatal("open ai api key not available. did you set it?")
