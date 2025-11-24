@@ -1,0 +1,2 @@
+# Overview
+This directory will serve as the hub for documentation related to this project. I added dev-notes that track updates each time I sit down and work on it. In the future, there will also be example yaml files showing what's possible w/ a configuration, how to run the app, etc. 
